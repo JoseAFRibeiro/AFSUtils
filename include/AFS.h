@@ -3,7 +3,7 @@
 
 #define AFS_ARCHIVE_STRUCT_SIZE 0x08
 #define AFS_ARCHIVE_STRUCT_OFFSET 0x08
-#define AFS_SIZE_DWORD 0x04
+#define AFS_SIZE_DWORD 4 * sizeof(char)
 
 struct afs_entry{
     unsigned long size;

@@ -1,0 +1,52 @@
+=================================================================
+==539==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7fff72497445 at pc 0x7ff4795d77cf bp 0x7fff72497400 sp 0x7fff72496ba8
+WRITE of size 16 at 0x7fff72497445 thread T0
+    #0 0x7ff4795d77ce in __interceptor_fread ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:1046
+    #1 0x55f2fde1a519 in readHeader src/afs.c:8
+    #2 0x55f2fde1a692 in readAFSFile src/afs.c:26
+    #3 0x55f2fde1aada in main src/main.c:33
+    #4 0x7ff478c7dd8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f)
+    #5 0x7ff478c7de3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f)
+    #6 0x55f2fde1a3a4 in _start (/mnt/e/programas/C/AFSUtils/bin/main_debug.exe+0x23a4)
+
+Address 0x7fff72497445 is located in stack of thread T0 at offset 37 in frame
+    #0 0x55f2fde1a478 in readHeader src/afs.c:5
+
+  This frame has 1 object(s):
+    [32, 37) 'header' (line 6) <== Memory access at offset 37 overflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:1046 in __interceptor_fread
+Shadow bytes around the buggy address:
+  0x10006e48ae30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48ae40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48ae50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48ae60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48ae70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x10006e48ae80: 00 00 00 00 f1 f1 f1 f1[05]f3 f3 f3 00 00 00 00
+  0x10006e48ae90: 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 f1 f1
+  0x10006e48aea0: 04 f2 00 00 f3 f3 00 00 00 00 00 00 00 00 00 00
+  0x10006e48aeb0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48aec0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10006e48aed0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==539==ABORTING
