@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "AFS.h"
 
 FILE * readFile(const char *source, int *fsize);
 int writeFile(const char *destination, const char *buffer);
-int readAFSFile(const char *inputPath, const char *outputPath);
 
 #endif 

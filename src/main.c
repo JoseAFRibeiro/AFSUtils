@@ -29,8 +29,6 @@ int main(int argc, char const *argv[])
         printf("Output path does not exist!\n");
         return -1;
     }
-
-    readAFSFile(input, output);
     
     return 0;
 }
