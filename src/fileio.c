@@ -33,19 +33,3 @@ FILE * readFile(const char *source, int *fsize)
     return f;
     
 }
-
-int writeFile(const char *destination, const char *buffer)
-{
-    FILE *f = fopen64(destination ,"wb");
-
-    if(f == NULL)
-    {
-        return NULL;
-    }
-
-    fprintf(f, "%s", buffer);
-    fclose(f);
-
-    return 0;
-
-}

@@ -30,5 +30,7 @@ int main(int argc, char const *argv[])
         return -1;
     }
     
+    serializeArchive(input, output);
+    
     return 0;
 }
