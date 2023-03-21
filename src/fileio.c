@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <errno.h>
 
 
 FILE * readFile(const char *source, int *fsize)
@@ -21,12 +22,12 @@ FILE * readFile(const char *source, int *fsize)
     fseeko64(f, 0, SEEK_END);
     size = ftello64(f);
     
-   /* if(errno == -1L)
+   if(errno == -1L)
     {
         printf("Error determining file size\n");
         fclose(f);
         return NULL;    
-    }*/
+    }
 
     rewind(f);
     *fsize = size;

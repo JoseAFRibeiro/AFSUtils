@@ -112,7 +112,7 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
     
     for(int i = 0; i < archive.numFiles; i++)
     {   
-        fseek(origin, archive.entryInfo[i].offset, SEEK_CUR);
+        fseek(origin, archive.entryInfo[i].offset, SEEK_SET);
         fread(buffer, sizeof(char), archive.entryInfo[i].size, origin);
 
         sprintf(fname, "%d", i);
