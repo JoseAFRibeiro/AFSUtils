@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -42,7 +43,7 @@ static inline int indexFiles(FILE *f, struct afs_archive *archive)
     return 0;
 }
 
-static inline struct afs_archive readAFSFile(const char *inputPath)
+struct afs_archive readAFSFile(const char *inputPath)
 {
     int fileSize;
     int result;
@@ -80,6 +81,9 @@ static inline struct afs_archive readAFSFile(const char *inputPath)
 
     result = indexFiles(f, &archive);
     origin = f;
+    free(namelen);
+    free(originalFName);
+
     return archive;
 }
 
@@ -130,6 +134,7 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
     fclose(origin);
     free(buffer);
     free(originalFName);
+    free(archive.entryInfo);
 
     return 1;
 }
