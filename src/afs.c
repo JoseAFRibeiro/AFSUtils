@@ -34,8 +34,11 @@ static inline int indexFiles(FILE *f, struct afs_archive *archive)
     archive->entryInfo = malloc(sizeof(struct afs_entry) * archive->numFiles);
     
    for(int i = 0; i< archive->numFiles; i++)
-        fread(&archive->entryInfo[i], AFS_ARCHIVE_STRUCT_SIZE, 1, f);
+    {
+        fread(&archive->entryInfo[i].offset, AFS_SIZE_DWORD, 1, f);
+        fread(&archive->entryInfo[i].size, AFS_SIZE_DWORD, 1, f);
 
+    }
     return 0;
 }
 
@@ -105,10 +108,11 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
 
     rewind(origin);
     chdir(outpath);
-
+    fseek(origin, AFS_BODY_START,SEEK_SET);
+    
     for(int i = 0; i < archive.numFiles; i++)
     {   
-        fseek(origin, archive.entryInfo[i].offset, SEEK_SET);
+        fseek(origin, archive.entryInfo[i].offset, SEEK_CUR);
         fread(buffer, sizeof(char), archive.entryInfo[i].size, origin);
 
         sprintf(fname, "%d", i);

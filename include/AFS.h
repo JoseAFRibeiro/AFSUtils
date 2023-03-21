@@ -17,7 +17,6 @@ struct afs_entry{
 };
 
 struct afs_archive{
-
     unsigned int numFiles;
     struct afs_entry *entryInfo; 
 };
