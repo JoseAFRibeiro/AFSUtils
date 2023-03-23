@@ -7,11 +7,11 @@ OBJ = $(patsubst ./src/%.c, ./obj/%.o, $(SRC))
 
 debug: $(OBJ)
 	$(CC) $^ -o ./bin/main_debug.exe -lm 
+#$(CFLAGS_DEBUG)
 
 clean: $(OBJ)
 	rm $^
-	debug
-
+	
 ./obj/%.o: ./src/%.c
 	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
 

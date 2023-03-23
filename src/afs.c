@@ -12,13 +12,13 @@ static int originalFNameSize;
 
 static inline int readHeader(FILE *f)
 {
-    unsigned char header[4];
+    unsigned char header[400];
 
     if(f == NULL)
         return 1;
     
     fread(header, sizeof(char), AFS_SIZE_DWORD, f);
-    fseeko64(f, AFS_SIZE_DWORD, SEEK_SET);
+    fseek(f, AFS_SIZE_DWORD, SEEK_SET);
      
     if(strcmp(header, "AFS\0"))
     {
@@ -45,7 +45,7 @@ static inline int indexFiles(FILE *f, struct afs_archive *archive)
 
 struct afs_archive readAFSFile(const char *inputPath)
 {
-    int fileSize;
+    unsigned long fileSize;
     int result;
     int fnamesize;
     struct afs_archive archive;
@@ -81,7 +81,6 @@ struct afs_archive readAFSFile(const char *inputPath)
 
     result = indexFiles(f, &archive);
     origin = f;
-    free(namelen);
     free(originalFName);
 
     return archive;

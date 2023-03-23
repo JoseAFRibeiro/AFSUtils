@@ -1,4 +1,5 @@
 #include "afsio.h"
+#include "AFS.h"
 #ifdef linux
 #include <sanitizer/asan_interface.h>
 #endif
@@ -30,6 +31,8 @@ int main(int argc, char const *argv[])
         return -1;
     }
     
-    return serializeArchive(input, output);
+    struct afs_archive arch = unpackArchive(input);
+
+    //return serializeArchive(input, output);
     
 }

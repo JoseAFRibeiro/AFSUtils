@@ -1,0 +1,17 @@
+=================================================================
+==147==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000080 (pc 0x7fc7a8c55bd2 bp 0x7ffda4ca1d70 sp 0x7ffda4ca14b0 T0)
+==147==The signal is caused by a READ memory access.
+==147==Hint: address points to the zero page.
+    #0 0x7fc7a8c55bd2 in _IO_fread (/lib/x86_64-linux-gnu/libc.so.6+0x7fbd2)
+    #1 0x7fc7a9559753 in __interceptor_fread ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:1045
+    #2 0x55e9859fa6c3 in readHeader src/afs.c:21
+    #3 0x55e9859faeb3 in readAFSFile src/afs.c:75
+    #4 0x55e9859fbd19 in unpackArchive src/libafs.c:11
+    #5 0x55e9859fbfa3 in main src/main.c:34
+    #6 0x7fc7a8bffd8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f)
+    #7 0x7fc7a8bffe3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f)
+    #8 0x55e9859fa544 in _start (/mnt/e/programas/C/AFSUtils/bin/main_debug.exe+0x4544)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (/lib/x86_64-linux-gnu/libc.so.6+0x7fbd2) in _IO_fread
+==147==ABORTING
