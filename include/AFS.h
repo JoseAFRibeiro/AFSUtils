@@ -6,11 +6,6 @@
 #define AFS_SIZE_DWORD 4 * sizeof(char)
 #define AFS_BODY_START 0x800000
 
-#include <stdio.h>
-
-FILE * readFile(const char *source, int *fsize);
-int writeFile(const char *destination, const char *buffer);
-
 struct afs_entry{
     unsigned long offset;
     unsigned long size;
@@ -20,5 +15,9 @@ struct afs_archive{
     unsigned int numFiles;
     struct afs_entry *entryInfo; 
 };
+
+struct afs_archive unpackArchive(const char *AFSarchivePath);
+int packFiles();
+
 
 #endif 
