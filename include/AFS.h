@@ -21,4 +21,9 @@ struct afs_archive{
     struct afs_entry *entryInfo; 
 };
 
+struct afs_archive libafs_readAFSFile(const char *filepath);
+
+
+struct afs_archive readAFSFile(const char *inputPath);
+
 #endif 

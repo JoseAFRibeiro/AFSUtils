@@ -42,7 +42,7 @@ static inline int indexFiles(FILE *f, struct afs_archive *archive)
     return 0;
 }
 
-static inline struct afs_archive readAFSFile(const char *inputPath)
+struct afs_archive readAFSFile(const char *inputPath)
 {
     int fileSize;
     int result;
@@ -133,6 +133,7 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
 
     return 1;
 }
+
 int serializeArchive(const char *inputPath, const char *outputPath)
 {
     struct afs_archive out;
