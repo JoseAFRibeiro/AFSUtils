@@ -1,25 +1,25 @@
 CC = gcc
 ARCHIVER = ar
-AR_FLAGS = rci
+AR_FLAGS = -rciv
 
 SRC = $(wildcard ./src/*.c)
 OBJ = $(patsubst ./src/%.c, ./obj/%.o, $(SRC))
 
 afsutil_release: 
 	$(MAKE)  -C ./obj/ release
-	$(CC) $(OBJ) -o afsutil.exe -lm
+	$(CC) $(OBJ) -o ./bin/afsutil.exe -lm
 
 afsutil_debug: 
 	$(MAKE) -C ./obj/. debug
-	$(CC) $(OBJ) -o afsutil_debug.exe -lm
+	$(CC) $(OBJ) -o ./bin/afsutil_debug.exe -lm
 
 lib_debug: 
 	$(MAKE) -C ./obj/. debug
-	$(AR) $(AR_FLAGS) afslib_debug.a $(OBJ)
+	$(AR) $(AR_FLAGS) ./bin/afslib_debug.a ./obj/*.o
 	
 lib_release: 
 	$(MAKE)  -C ./obj/ release
-	$(AR) $(AR_FLAGS) afslib.a $(OBJ)
+	$(AR) $(AR_FLAGS) ./bin/afslib.a ./obj/*.o
 
 clean: $(OBJ)
 	$(MAKE)  -C ./obj/ clean
