@@ -1,23 +1,29 @@
 CC = gcc
 ARCHIVER = ar
-CFLAGS_DEBUG = -g -I ./include -O0 -Wall -march=native -std=c17 -Ddebug 
-#-Warray-bounds=2 -Dlinux -fstack-protector-strong -fsanitize=address -fsanitize=undefined
+AR_FLAGS = rci
 
 SRC = $(wildcard ./src/*.c)
 OBJ = $(patsubst ./src/%.c, ./obj/%.o, $(SRC))
 
-debug: $(OBJ)
-	$(CC) $^ -o ./bin/main_debug.exe -lm 
+afsutil_release: 
+	$(MAKE)  -C ./obj/ release
+	$(CC) $(OBJ) -o afsutil.exe -lm
 
-lib: $(OBJ)
-#	$(filter-out main.o, $(OBJ))
-	rm ./obj/main.o
-	$(ARCHIVER) rcs ./bin/afsutil.a ./obj/afs.o ./obj/fileio.o ./obj/libafs.o ./obj/pathverify.o
+afsutil_debug: 
+	$(MAKE) -C ./obj/. debug
+	$(CC) $(OBJ) -o afsutil_debug.exe -lm
+
+lib_debug: 
+	$(MAKE) -C ./obj/. debug
+	$(AR) $(AR_FLAGS) afslib_debug.a $(OBJ)
+	
+lib_release: 
+	$(MAKE)  -C ./obj/ release
+	$(AR) $(AR_FLAGS) afslib.a $(OBJ)
 
 clean: $(OBJ)
-	rm $^
-	debug
+	$(MAKE)  -C ./obj/ clean
+	del ./bin/*.exe
+	del ./bin/*.a
 
-./obj/%.o: ./src/%.c
-	$(CC) -c -o $@ $< $(CFLAGS_DEBUG)
 
