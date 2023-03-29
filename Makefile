@@ -1,6 +1,6 @@
 CC = gcc
 ARCHIVER = ar
-AR_FLAGS = -rciv
+AR_FLAGS = rciv
 
 SRC = $(wildcard ./src/*.c)
 OBJ = $(patsubst ./src/%.c, ./obj/%.o, $(SRC))
@@ -15,11 +15,12 @@ afsutil_debug:
 
 lib_debug: 
 	$(MAKE) -C ./obj/. debug
-	$(AR) $(AR_FLAGS) ./bin/afslib_debug.a ./obj/*.o
+	$(MAKE) -C ./obj/. archive
+
 	
 lib_release: 
 	$(MAKE)  -C ./obj/ release
-	$(AR) $(AR_FLAGS) ./bin/afslib.a ./obj/*.o
+	$(MAKE) -C ./obj/. archive
 
 clean: $(OBJ)
 	$(MAKE)  -C ./obj/ clean
