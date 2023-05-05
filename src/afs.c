@@ -9,7 +9,7 @@ static FILE *origin;
 static char *originalFName;
 static int originalFNameSize;
 
-
+//unpacking AFS archive
 static inline int readHeader(FILE *f)
 {
     unsigned char header[4];
@@ -154,4 +154,76 @@ int serializeArchive(const char *inputPath, const char *outputPath)
     }
 
     return 1;
+}
+
+//AFS file packing
+#define AFS_MAGIC_WORD "AFS\0"
+
+static inline struct afs_archival_entry *indexFilesArchival(unsigned int fcount, const char ** paths)
+{
+    struct afs_archival_entry *archives = malloc(sizeof(struct afs_archival_entry) * fcount);
+
+    if(archives == NULL)
+        return NULL;
+
+    for(int i = 0; i < fcount; i++ )
+    {
+       archives[i].f = fopen(paths[i], "rb");
+       archives[i].size = getFileSize(archives->f);
+    }   
+
+    return archives;
+}
+
+static inline void calculateOffsets(unsigned int fcount, struct afs_archival_entry *entries)
+{
+    unsigned int currentOffset = AFS_BODY_START;
+    unsigned int cursor = AFS_BODY_START;
+
+    entries[0].offset = AFS_BODY_START;
+    cursor += entries[0].size;
+
+    int multiple;
+
+    for(int i = 1; i < fcount; i++)
+    {   
+        multiple = cursor / 0x0100;
+        cursor = (multiple + 1) * 256;
+
+        entries[i].offset = cursor;
+        cursor += entries[i].size;  
+    }
+}
+
+static inline unsigned int calculateArchiveSize(unsigned int size, unsigned int offset)
+{
+    return size + offset;
+}
+
+static inline void writeToArchive(struct afs_archival_entry *archives, unsigned int entryCount, char *buffer )
+{
+
+}
+
+int archiveFiles(const char* outPath, const char **entries, unsigned int entryCount)
+{
+    FILE *f = fopen(outPath, "w");
+
+    if(f == NULL)
+        return -1;
+
+    struct afs_archival_entry *archives = indexFilesArchival(entryCount, entries);
+
+    if(archives == NULL)
+        return -2;
+
+    calculateOffsets(entryCount, archives);
+    int archiveSize = calculateArchiveSize(archives[entryCount - 1].size, archives[entryCount - 1].offset);
+
+    char * archive = malloc(archiveSize);
+
+    if(archive == NULL)
+        return -2;
+
+    return 0;
 }
