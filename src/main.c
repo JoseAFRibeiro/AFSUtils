@@ -6,11 +6,11 @@
 int main(int argc, char const *argv[])
 {
 
-    const char *input, *output;
+    const char *input, *output, *mode;
     #ifdef linux
     __sanitizer_set_report_path("./stackdebug.txt");
     #endif
-    if(argc != 3)
+    if(argc < 3)
     {
         printf("Error, too few or too many arguments.\nTo use this program provide an input file, an output location and operation mode");
         return -1;
@@ -18,6 +18,7 @@ int main(int argc, char const *argv[])
 
     input = argv[1];
     output = argv[2];
+    mode = argv[3];
 
     if(!isPath(input))
     {

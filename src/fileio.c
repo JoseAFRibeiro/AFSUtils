@@ -7,6 +7,23 @@
 #include <errno.h>
 #endif
 
+unsigned int getFileSize(FILE *f)
+{
+    int result;
+    long fsize;
+
+    result = fseek(f, 0, SEEK_END);
+
+    if(result != 0)
+        return 0;
+    
+    fsize = ftell(f);
+
+    if(fsize > INT_MAX)
+        return 0;
+
+    return (int) fsize;
+}
 
 FILE * readFile(const char *source, long *fsize)
 {

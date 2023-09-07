@@ -9,7 +9,7 @@ This entire repository is license under [CC BY-NC-SA 4.0](https://creativecommon
 
 ## Compiling
 
-This project comes with a Makefile configured for the GCC suite. It allows to compile the source down to an executable or a static library.
+This project comes with a Meson buildfile. It allows to compile the source down to an executable or a static library.
 
 ## AFSUtil
 

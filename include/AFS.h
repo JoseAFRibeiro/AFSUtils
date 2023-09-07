@@ -10,15 +10,23 @@
 
 FILE * readFile(const char *source, long *fsize);
 int writeFile(const char *destination, const char *buffer);
+unsigned int getFileSize(FILE *f);
+
 
 struct afs_entry{
-    unsigned long offset;
-    unsigned long size;
+    unsigned int offset;
+    unsigned int size;
 };
 
 struct afs_archive{
     unsigned int numFiles;
     struct afs_entry *entryInfo; 
+};
+
+struct afs_archival_entry{
+    FILE *f;
+    unsigned int size;
+    unsigned int offset;
 };
 
 struct afs_archive libafs_readAFSFile(const char *filepath);

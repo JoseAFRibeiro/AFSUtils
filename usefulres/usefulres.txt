@@ -1,0 +1,5 @@
+#argument parsing
+https://stackoverflow.com/questions/9642732/parsing-command-line-arguments-in-c
+
+#unit testing
+https://stackoverflow.com/questions/65820/unit-testing-c-code
