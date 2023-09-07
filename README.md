@@ -23,7 +23,7 @@ AFSUtil requires two arguments, the first is the input AFS archive that will be 
 
 A C library that provides an easy way to unpack AFS archives
 
-### Usages
+### Usage
 
 Check the header ([libafs.h]() tba) to see the functions exposed by the library
 
@@ -31,3 +31,4 @@ Check the header ([libafs.h]() tba) to see the functions exposed by the library
 
 - Add packing functionality
 - Improve makefiles
+- Actual library build
