@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
+#ifdef linux
 #include <errno.h>
+#endif
 
 
-FILE * readFile(const char *source, int *fsize)
+FILE * readFile(const char *source, long *fsize)
 {
     off_t size;
 

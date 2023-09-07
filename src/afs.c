@@ -1,24 +1,20 @@
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <errno.h>
 #include "afsio.h"
 #include "AFS.h"
 
 static FILE *origin;
-static char *originalFName;
-static int originalFNameSize;
-
 
 static inline int readHeader(FILE *f)
 {
-    unsigned char header[4];
+    char header[AFS_SIZE_DWORD];
 
     if(f == NULL)
         return 1;
     
     fread(header, sizeof(char), AFS_SIZE_DWORD, f);
-    fseeko64(f, AFS_SIZE_DWORD, SEEK_SET);
+    fseek(f, AFS_SIZE_DWORD, SEEK_SET);
      
     if(strcmp(header, "AFS\0"))
     {
@@ -27,10 +23,8 @@ static inline int readHeader(FILE *f)
     
     return 0;
 }
-static inline int indexFiles(FILE *f, struct afs_archive *archive)
+static inline void indexFiles(FILE *f, struct afs_archive *archive)
 {
-    int result = 0;
-
     fread(&archive->numFiles, sizeof(int), 1, f);
     archive->entryInfo = malloc(sizeof(struct afs_entry) * archive->numFiles);
     
@@ -40,34 +34,14 @@ static inline int indexFiles(FILE *f, struct afs_archive *archive)
         fread(&archive->entryInfo[i].size, AFS_SIZE_DWORD, 1, f);
 
     }
-    return 0;
+    return;
 }
 
 struct afs_archive readAFSFile(const char *inputPath)
 {
-    int fileSize;
+    long fileSize;
     int result;
-    int fnamesize;
     struct afs_archive archive;
-
-    int namelen = strlen(inputPath);
-    int cursor = namelen;
-    originalFName = malloc(namelen);
-
-    if(originalFName == NULL)
-    {
-        struct afs_archive err = {0};
-        return err;
-    }
-
-    while(inputPath[cursor] != '/')
-    {
-        cursor --;
-    }
-
-    fnamesize = originalFNameSize = namelen - cursor;
-
-    memcpy(originalFName, &inputPath[cursor],  originalFNameSize);
 
     FILE *f = readFile(inputPath, &fileSize);
     
@@ -79,7 +53,7 @@ struct afs_archive readAFSFile(const char *inputPath)
         return err;
     }
 
-    result = indexFiles(f, &archive);
+    indexFiles(f, &archive);
     origin = f;
     return archive;
 }
@@ -88,8 +62,7 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
 {
     FILE *f;
     char *buffer;
-    char *fname;
-    unsigned char fnamesize = originalFNameSize;
+    char outFileName[12];
     unsigned int maxSize = 0;
     
     //get biggest file so we only need to call malloc once
@@ -100,9 +73,8 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
     }
 
     buffer = malloc(maxSize);
-    fname = malloc(fnamesize * 2);
 
-    if((fname || buffer) == NULL)
+    if(buffer == NULL)
     {
         return -1;
     }
@@ -115,22 +87,21 @@ static inline int serializeOut(const char *outpath, struct afs_archive archive)
     {   
         fseek(origin, archive.entryInfo[i].offset, SEEK_SET);
         fread(buffer, sizeof(char), archive.entryInfo[i].size, origin);
+        sprintf(outFileName, "%d", i);
 
-        sprintf(fname, "%d", i);
-
-        f = fopen(fname, "w");
+        f = fopen(outFileName, "w");
 
         if(f == NULL)
         {
-            printf("%d\n", errno);
+            break;
         }
+
         fwrite(buffer, sizeof(char), archive.entryInfo[i].size, f);
         fclose(f);
     }
 
     fclose(origin);
     free(buffer);
-    free(originalFName);
 
     return 1;
 }
@@ -152,6 +123,8 @@ int serializeArchive(const char *inputPath, const char *outputPath)
         printf("Error, could not write the files in the archive to disc\n");
         return -2;
     }
+    
+    free(out.entryInfo);
 
     return 1;
 }

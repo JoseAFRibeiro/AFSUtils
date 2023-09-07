@@ -31,7 +31,8 @@ int main(int argc, char const *argv[])
         return -1;
     }
     
-    struct afs_archive archive = libafs_readAFSFile(input);
+    serializeArchive(input, output);
+    
     return 0; 
     
 }

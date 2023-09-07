@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 
-FILE * readFile(const char *source, int *fsize);
+FILE * readFile(const char *source, long *fsize);
 int writeFile(const char *destination, const char *buffer);
 
 struct afs_entry{

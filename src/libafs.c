@@ -5,7 +5,7 @@ struct afs_archive libafs_readAFSFile(const char *filepath)
 {
     struct afs_archive archive = {0};
 
-    if(!isPath)
+    if(!isPath(filepath))
     {
         return archive;
     }
